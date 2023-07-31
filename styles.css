@@ -1,18 +1,116 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
 * {
   box-sizing: border-box;
 }
 
 html,
 body {
-  min-height: 100%;
+  height: 100%;
 }
 
 body {
   font-size: 1.4rem;
   text-rendering: optimizeLegibility;
   margin: 0;
+  font-family: "Nunito", sans-serif;
+  background-color: rgba(156, 154, 139, 0.6);
 }
 
 h1 {
   font-size: 1.4rem;
+}
+
+.button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  transform: translateY(6px);
+  box-shadow: rgb(235, 235, 235) 0px 6px 0px;
+  background-color: white;
+  margin-bottom: 10px;
+  color: rgb(186, 73, 73);
+  font-weight: bold;
+}
+.button:hover {
+  cursor: pointer;
+}
+.number {
+  width: 32%;
+  text-align: center;
+  align-items: center;
+  flex: 1 1 auto;
+  position: relative;
+}
+
+.operator {
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  padding: 10px 20px;
+  position: relative;
+}
+.calculator-container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+.calculator-border {
+  max-width: 400px;
+  background-color: rgb(186, 73, 73);
+  border-radius: 10px;
+  padding: 30px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin: auto;
+  box-shadow: rgb(58, 63, 63) 0px 8px 4px;
+  background-color: rgb(88, 83, 83);
+}
+.pad-container {
+  border: none;
+  border-radius: 10px;
+  display: flex;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.numpad-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 20px 10px;
+  gap: 5px;
+}
+.operpad-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px 10px;
+  gap: 5px;
+}
+.display-container {
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  background-color: rgba(255, 255, 255, 0.9);
+  text-align: right;
+}
+#current-input {
+  font-size: 2.5rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  font-weight: bold;
+}
+#last-input {
+  color: rgba(0, 0, 0, 0.8);
+  margin-right: 5px;
 }
