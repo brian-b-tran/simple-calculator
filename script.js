@@ -107,6 +107,7 @@ clearBtn.addEventListener("click", () => {
   savedOperand = "";
   isEqualBtnPressed = false;
 });
+
 backBtn.addEventListener("click", () => {
   currentOperand = currentOperand.slice(0, -1);
   if (currentOperand == "") {
@@ -115,6 +116,7 @@ backBtn.addEventListener("click", () => {
     currentInputDiv.textContent = currentOperand;
   }
 });
+
 dotBtn.addEventListener("click", () => {
   console.log(".");
   if (currentOperand.length < 15 && !currentOperand.includes(".")) {
