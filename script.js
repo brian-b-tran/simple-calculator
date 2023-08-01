@@ -87,7 +87,6 @@ addBtn.addEventListener("click", () => {
 });
 
 subtractBtn.addEventListener("click", () => {
-  console.log("subtracting");
   operatorEventListener(subtract, "-");
 });
 
@@ -118,7 +117,6 @@ backBtn.addEventListener("click", () => {
 });
 
 dotBtn.addEventListener("click", () => {
-  console.log(".");
   if (currentOperand.length < 15 && !currentOperand.includes(".")) {
     if (currentOperand.length == 0) {
       currentOperand += "0";
