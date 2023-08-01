@@ -18,7 +18,11 @@ function divide(a, b) {
 }
 
 function operate(operation, a, b) {
-  return operation(a, b);
+  let answer = operation(a, b);
+  if (!isNaN(answer)) {
+    return parseFloat(answer.toFixed(6));
+  }
+  return answer;
 }
 export { operate, add, subtract, multiply, divide };
 // module.exports = { operate, add, subtract, multiply, divide };

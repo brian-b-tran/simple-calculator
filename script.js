@@ -17,6 +17,7 @@ let lastInputDiv = document.getElementById("last-input");
 let numbersArray = document.querySelectorAll(".number");
 let clearBtn = document.getElementById("clear");
 let negateBtn = document.getElementById("negate");
+let backBtn = document.getElementById("back");
 let dotBtn = document.getElementById("dot");
 let addBtn = document.getElementById("add");
 let subtractBtn = document.getElementById("subtract");
@@ -81,24 +82,24 @@ numbersArray.forEach((numberBtn) => {
 });
 
 //hook up the operator pad buttons
-addBtn.addEventListener("click", (e) => {
+addBtn.addEventListener("click", () => {
   operatorEventListener(add, "+");
 });
 
-subtractBtn.addEventListener("click", (e) => {
+subtractBtn.addEventListener("click", () => {
   console.log("subtracting");
   operatorEventListener(subtract, "-");
 });
 
-multiplyBtn.addEventListener("click", (e) => {
+multiplyBtn.addEventListener("click", () => {
   operatorEventListener(multiply, "x");
 });
 
-divideBtn.addEventListener("click", (e) => {
+divideBtn.addEventListener("click", () => {
   operatorEventListener(divide, "/");
 });
 
-clearBtn.addEventListener("click", (e) => {
+clearBtn.addEventListener("click", () => {
   currentInputDiv.textContent = 0;
   lastInputDiv.textContent = 0;
   lastInputDiv.style.visibility = "hidden";
@@ -106,8 +107,15 @@ clearBtn.addEventListener("click", (e) => {
   savedOperand = "";
   isEqualBtnPressed = false;
 });
-
-dotBtn.addEventListener("click", (e) => {
+backBtn.addEventListener("click", () => {
+  currentOperand = currentOperand.slice(0, -1);
+  if (currentOperand == "") {
+    currentInputDiv.textContent = "0";
+  } else {
+    currentInputDiv.textContent = currentOperand;
+  }
+});
+dotBtn.addEventListener("click", () => {
   console.log(".");
   if (currentOperand.length < 15 && !currentOperand.includes(".")) {
     if (currentOperand.length == 0) {
@@ -118,7 +126,7 @@ dotBtn.addEventListener("click", (e) => {
   }
 });
 
-equateBtn.addEventListener("click", (e) => {
+equateBtn.addEventListener("click", () => {
   if (savedOperand != "") {
     performOperation(chosenOperation, "=");
     isEqualBtnPressed = true;
