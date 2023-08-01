@@ -11,6 +11,7 @@ let currentOperand = "";
 let savedOperand = "";
 let equationString = "";
 let chosenOperation = null;
+let isEqualBtnPressed = false;
 let currentInputDiv = document.getElementById("current-input");
 let lastInputDiv = document.getElementById("last-input");
 let numbersArray = document.querySelectorAll(".number");
@@ -25,6 +26,13 @@ let equateBtn = document.getElementById("equal");
 
 //accumulates the number being inputted by the numpad and saves it as an operand
 function numberEventListener(event) {
+  if (isEqualBtnPressed) {
+    lastInputDiv.textContent = 0;
+    lastInputDiv.style.visibility = "hidden";
+    currentOperand = "";
+    savedOperand = "";
+    isEqualBtnPressed = false;
+  }
   if (currentOperand.length < 15) {
     currentInputDiv.textContent = currentOperand + event.target.id;
     currentOperand = currentOperand + event.target.id;
@@ -33,14 +41,21 @@ function numberEventListener(event) {
 
 //determines the operation to be used next, if both operands have already been determined, it performs the already chosen operation first.
 function operatorEventListener(operation, operationSymbol) {
+  if (isEqualBtnPressed) {
+    isEqualBtnPressed = false;
+    currentOperand = "";
+    lastInputDiv.textContent =
+      equationString = `${savedOperand} ${operationSymbol} `;
+  }
   if (currentOperand.length > 0 && savedOperand.length == 0) {
     savedOperand = currentOperand;
-    equationString = savedOperand + ` ${operationSymbol} `;
+    equationString = `${savedOperand} ${operationSymbol} `;
     lastInputDiv.textContent = equationString;
     lastInputDiv.style.visibility = "visible";
     currentOperand = "";
     chosenOperation = operation;
   } else if (savedOperand.length != 0) {
+    //this is currently evaluating the operation immediately and ignoring the rule of order of operations
     performOperation(chosenOperation, operationSymbol);
     chosenOperation = operation;
   }
@@ -50,7 +65,7 @@ function operatorEventListener(operation, operationSymbol) {
 function performOperation(operation, operationSymbol) {
   if (savedOperand != "" && currentOperand != "") {
     let answer = operate(operation, savedOperand, currentOperand);
-    equationString += currentOperand + ` ${operationSymbol} `;
+    equationString = ` (${equationString} ${currentOperand}) ${operationSymbol} `;
     lastInputDiv.textContent = equationString;
     savedOperand = answer;
     currentInputDiv.textContent = answer;
@@ -58,14 +73,14 @@ function performOperation(operation, operationSymbol) {
   }
 }
 
-//hook up the numpad
+//hook up the numpad buttons
 numbersArray.forEach((numberBtn) => {
   numberBtn.addEventListener("click", (event) => {
     numberEventListener(event);
   });
 });
 
-//hook up the operator pad
+//hook up the operator pad buttons
 addBtn.addEventListener("click", (e) => {
   operatorEventListener(add, "+");
 });
@@ -84,12 +99,12 @@ divideBtn.addEventListener("click", (e) => {
 });
 
 clearBtn.addEventListener("click", (e) => {
-  console.log("clearing");
   currentInputDiv.textContent = 0;
   lastInputDiv.textContent = 0;
   lastInputDiv.style.visibility = "hidden";
   currentOperand = "";
   savedOperand = "";
+  isEqualBtnPressed = false;
 });
 
 dotBtn.addEventListener("click", (e) => {
@@ -104,8 +119,8 @@ dotBtn.addEventListener("click", (e) => {
 });
 
 equateBtn.addEventListener("click", (e) => {
-  performOperation(chosenOperation, "=");
-  console.log("savedOperand: " + savedOperand);
-  console.log("equationString: " + equationString);
-  console.log("currentOperand: " + currentOperand);
+  if (savedOperand != "") {
+    performOperation(chosenOperation, "=");
+    isEqualBtnPressed = true;
+  }
 });
