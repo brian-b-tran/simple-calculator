@@ -5,14 +5,14 @@ import {
   divide,
   multiply,
 } from "./utility/operations.js";
-// i need a stack or something to keep track of numbers and operations
-let chosenOperation;
-let firstNumber = "";
-let secondNumber = "";
-let displayString = "";
+// A better way to do this is to use a stack or something to keep track of numbers and operations
+
+let currentOperand = "";
+let savedOperand = "";
+let equationString = "";
+let chosenOperation = null;
 let currentInputDiv = document.getElementById("current-input");
 let lastInputDiv = document.getElementById("last-input");
-
 let numbersArray = document.querySelectorAll(".number");
 let clearBtn = document.getElementById("clear");
 let negateBtn = document.getElementById("negate");
@@ -21,44 +21,91 @@ let addBtn = document.getElementById("add");
 let subtractBtn = document.getElementById("subtract");
 let multiplyBtn = document.getElementById("multiply");
 let divideBtn = document.getElementById("divide");
+let equateBtn = document.getElementById("equal");
 
+//accumulates the number being inputted by the numpad and saves it as an operand
+function numberEventListener(event) {
+  if (currentOperand.length < 15) {
+    currentInputDiv.textContent = currentOperand + event.target.id;
+    currentOperand = currentOperand + event.target.id;
+  }
+}
+
+//determines the operation to be used next, if both operands have already been determined, it performs the already chosen operation first.
+function operatorEventListener(operation, operationSymbol) {
+  if (currentOperand.length > 0 && savedOperand.length == 0) {
+    savedOperand = currentOperand;
+    equationString = savedOperand + ` ${operationSymbol} `;
+    lastInputDiv.textContent = equationString;
+    lastInputDiv.style.visibility = "visible";
+    currentOperand = "";
+    chosenOperation = operation;
+  } else if (savedOperand.length != 0) {
+    performOperation(chosenOperation, operationSymbol);
+    chosenOperation = operation;
+  }
+}
+
+//performs the operation on operands
+function performOperation(operation, operationSymbol) {
+  if (savedOperand != "" && currentOperand != "") {
+    let answer = operate(operation, savedOperand, currentOperand);
+    equationString += currentOperand + ` ${operationSymbol} `;
+    lastInputDiv.textContent = equationString;
+    savedOperand = answer;
+    currentInputDiv.textContent = answer;
+    currentOperand = "";
+  }
+}
+
+//hook up the numpad
 numbersArray.forEach((numberBtn) => {
-  numberBtn.addEventListener("click", (e) => {
-    if (firstNumber.length < 15) {
-      let btnNumberPressed = numberBtn.id;
-      let accumulatedNumber = firstNumber;
-      currentInputDiv.textContent = accumulatedNumber + btnNumberPressed;
-      firstNumber = accumulatedNumber + btnNumberPressed;
-    }
+  numberBtn.addEventListener("click", (event) => {
+    numberEventListener(event);
   });
 });
 
+//hook up the operator pad
+addBtn.addEventListener("click", (e) => {
+  operatorEventListener(add, "+");
+});
+
+subtractBtn.addEventListener("click", (e) => {
+  console.log("subtracting");
+  operatorEventListener(subtract, "-");
+});
+
+multiplyBtn.addEventListener("click", (e) => {
+  operatorEventListener(multiply, "x");
+});
+
+divideBtn.addEventListener("click", (e) => {
+  operatorEventListener(divide, "/");
+});
+
 clearBtn.addEventListener("click", (e) => {
+  console.log("clearing");
   currentInputDiv.textContent = 0;
   lastInputDiv.textContent = 0;
   lastInputDiv.style.visibility = "hidden";
-  firstNumber = "";
-  secondNumber = "";
+  currentOperand = "";
+  savedOperand = "";
 });
 
 dotBtn.addEventListener("click", (e) => {
-  if (firstNumber.length < 15 && !firstNumber.includes(".")) {
-    if (firstNumber.length == 0) {
-      firstNumber += "0";
+  console.log(".");
+  if (currentOperand.length < 15 && !currentOperand.includes(".")) {
+    if (currentOperand.length == 0) {
+      currentOperand += "0";
     }
-    firstNumber += ".";
-    currentInputDiv.textContent = firstNumber;
+    currentOperand += ".";
+    currentInputDiv.textContent = currentOperand;
   }
 });
 
-addBtn.addEventListener("click", (e) => {
-  if (firstNumber.length > 0 && secondNumber.length == 0) {
-    secondNumber = firstNumber;
-    displayString = secondNumber + " + ";
-    lastInputDiv.textContent = displayString;
-    lastInputDiv.style.visibility = "visible";
-    firstNumber = "";
-    chosenOperation = add;
-  } else {
-  }
+equateBtn.addEventListener("click", (e) => {
+  performOperation(chosenOperation, "=");
+  console.log("savedOperand: " + savedOperand);
+  console.log("equationString: " + equationString);
+  console.log("currentOperand: " + currentOperand);
 });

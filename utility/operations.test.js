@@ -10,6 +10,9 @@ describe.skip("add", () => {
   test("works with negative numbers", () => {
     expect(operations.operate(operations.add, -1, 2)).toEqual(1);
   });
+  test("works with string numbers", () => {
+    expect(operations.operate(operations.add, "-1", "2")).toEqual(1);
+  });
 });
 
 describe.skip("subtract", () => {
